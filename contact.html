@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact AYSRAEL Studios | Professional Music Recording</title>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Dashboard Toggle -->
+    <button class="dashboard-toggle" id="dashboardToggle">
+        <i class="fas fa-sliders-h"></i>
+    </button>
+
+    <!-- Navigation Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <a href="javascript:void(0)" class="close-btn" id="closeBtn">&times;</a>
+        <div class="studio-brand">
+            <div class="logo"><img src="./imgs/Logo_01A.jpg" alt="aysraelstudios logo" height="65px" width="70px"></div>
+            <h2>AYSRAEL Studios</h2>
+        </div>
+        <nav class="dashboard-nav">
+            <a href="index.html" class="nav-link">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="about.html" class="nav-link">
+                <i class="fas fa-info-circle"></i> About
+            </a>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-spotify"></i></a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>GET IN TOUCH</h1>
+            <p>Ready to book a session or have questions? Reach out to our team</p>
+            <p>Whether you're laying your first track or perfecting your next big release, our team is here to support your journey from concept to polished product.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2 class="section-title">CONTACT INFORMATION</h2>
+                <div class="info-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Studio Location</h3>
+                    <p>123 Music Avenue<br>Studio City, CA 91604</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone</h3>
+                    <p>Main: (555) 123-4567<br>Booking: (555) 765-4321</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>info@aysraelstudios.com<br>bookings@aysraelstudios.com</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Hours</h3>
+                    <p>Monday-Friday: 10AM - 10PM<br>Saturday: 12PM - 8PM<br>Sunday: Closed</p>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2 class="section-title">SEND US A MESSAGE</h2>
+                <form id="studioContactForm">
+                    <input type="hidden" name="secret" value="AYSRAEL2023!">
+                    
+                    <div class="form-group">
+                      <input type="text" name="name" placeholder="Your Name" required pattern="[A-Za-z ]{3,50}" title="3-50 characters">
+                    </div>
+                    
+                    <div class="form-group">
+                      <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                      <input type="tel" name="phone" placeholder="Phone (optional)" pattern="[0-9+ ]{10,15}">
+                    </div>
+                    
+                    <div class="form-group">
+                      <select name="service" required>
+                        <option value="" disabled selected>Select Service</option>
+                        <option value="Recording">Recording Session</option>
+                        <option value="Mixing">Mixing</option>
+                        <option value="Mastering">Mastering</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group">
+                      <textarea name="message" placeholder="Your message..." required minlength="20"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="cta-button">
+                      <span class="button-text">Send Message</span>
+                      <span class="button-spinner" style="display:none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                      </span>
+                    </button>
+                    
+                    <div id="formMessage" class="form-message"></div>
+                  </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Studio Map -->
+    <section class="studio-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.837020755434!2d-118.39687292453734!3d34.14260107314378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bed8e0a3a3a5%3A0x6a4c7c8b9f4e3b0!2s123%20Music%20Ave%2C%20Studio%20City%2C%20CA%2091604%2C%20USA!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s" 
+                width="100%" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+        </iframe>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo"><img src="./imgs/Logo_01B.jpg" alt="aysraelstudios logo" height="40px" width="45px"></div>
+                <h3>AYSRAEL Studios</h3>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+            </div>
+            <div class="footer-contact">
+                <p><i class="fas fa-map-marker-alt"></i> 123 Music Avenue, Studio City</p>
+                <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> info@aysraelstudios.com</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 AYSRAEL Studios. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="./index.js"></script>
+</body>
+</html>
