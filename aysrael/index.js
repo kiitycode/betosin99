@@ -1,324 +1,278 @@
-// DOM Elements
-const dashboardToggle = document.getElementById('dashboardToggle');
-const dashboard = document.getElementById('dashboard');
-const closeBtn = document.getElementById('closeBtn');
-const overlay = document.getElementById('overlay');
-const navLinks = document.querySelectorAll('.nav-link');
-const scrollIndicator = document.querySelector('.scroll-indicator');
-const serviceCards = document.querySelectorAll('.service-card');
-const ctaButtons = document.querySelectorAll('.cta-button');
+(() => {
+  const dashboardToggle = document.getElementById('dashboardToggle');
+  const dashboard = document.getElementById('dashboard');
+  const closeBtn = document.getElementById('closeBtn');
+  const overlay = document.getElementById('overlay');
+  const navLinks = document.querySelectorAll('.nav-link');
 
-// Dashboard Functionality
-function toggleDashboard() {
-    dashboard.classList.toggle('open');
-    overlay.style.display = dashboard.classList.contains('open') ? 'block' : 'none';
-    
-    // Toggle body scroll when dashboard is open
-    document.body.style.overflow = dashboard.classList.contains('open') ? 'hidden' : '';
-}
+  function toggleDashboard() {
+    const isOpen = dashboard.classList.toggle('open');
+    overlay.style.display = isOpen ? 'block' : 'none';
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
 
-// Close dashboard when clicking on nav links
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        if (window.innerWidth <= 768) { // Only auto-close on mobile
-            toggleDashboard();
-        }
+  if (dashboardToggle && dashboard && overlay && closeBtn) {
+    dashboardToggle.addEventListener('click', toggleDashboard);
+    closeBtn.addEventListener('click', toggleDashboard);
+    overlay.addEventListener('click', toggleDashboard);
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) toggleDashboard();
+      });
     });
-});
+  }
+})();
 
-// Event Listeners
-dashboardToggle.addEventListener('click', toggleDashboard);
-closeBtn.addEventListener('click', toggleDashboard);
-overlay.addEventListener('click', toggleDashboard);
 
-// Scroll to next section when clicking scroll indicator
-if (scrollIndicator) {
+/* ===== 2. HERO PARALLAX ===== */
+(() => {
+  const heroSection = document.querySelector('.hero');
+  if (heroSection) {
+    window.addEventListener('scroll', () => {
+      heroSection.style.backgroundPositionY = `${window.scrollY * 0.5}px`;
+    });
+  }
+})();
+
+
+/* ===== 3. SCROLL TO SECTION ===== */
+(() => {
+  const scrollIndicator = document.querySelector('.scroll-indicator');
+  const servicesPreview = document.querySelector('.services-preview');
+
+  if (scrollIndicator && servicesPreview) {
     scrollIndicator.addEventListener('click', () => {
-        const servicesSection = document.querySelector('.services-preview');
-        servicesSection.scrollIntoView({ behavior: 'smooth' });
+      servicesPreview.scrollIntoView({ behavior: 'smooth' });
     });
-}
+  }
+})();
 
-// Service Card Animation
-serviceCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        const icon = card.querySelector('i');
-        icon.style.transform = 'rotate(10deg) scale(1.1)';
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        const icon = card.querySelector('i');
-        icon.style.transform = 'rotate(0) scale(1)';
-    });
-});
 
-// CTA Button Animation
-ctaButtons.forEach(button => {
-    button.addEventListener('mousedown', () => {
-        button.style.transform = 'translateY(1px)';
-    });
-    
-    button.addEventListener('mouseup', () => {
-        button.style.transform = 'translateY(-3px)';
-    });
-    
-    button.addEventListener('mouseleave', () => {
-        button.style.transform = 'translateY(0)';
-    });
-});
+/* ===== 4. CTA BUTTON PRESS EFFECT ===== */
+(() => {
+  const ctaButtons = document.querySelectorAll('.cta-button');
 
-// Parallax Effect for Hero Section
-window.addEventListener('scroll', () => {
-    const scrollPosition = window.scrollY;
-    const hero = document.querySelector('.hero');
-    
-    if (hero) {
-        hero.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
-    }
-});
+  ctaButtons.forEach(button => {
+    button.addEventListener('mousedown', () => button.style.transform = 'translateY(2px)');
+    button.addEventListener('mouseup', () => button.style.transform = 'translateY(-3px)');
+    button.addEventListener('mouseleave', () => button.style.transform = 'translateY(0)');
+  });
+})();
 
-// Animate elements when they come into view
-const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.service-card, .section-title, .showcase-content');
-    
-    elements.forEach(element => {
-        const elementPosition = element.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.3;
-        
-        if (elementPosition < screenPosition) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
+
+/* ===== 5. SERVICES CAROUSEL ===== */
+(() => {
+  const carousel = document.querySelector('.services-carousel');
+  const leftBtn = document.querySelector('.scroll-btn.left');
+  const rightBtn = document.querySelector('.scroll-btn.right');
+
+  function scrollCarousel(direction) {
+    if (!carousel) return;
+    const scrollAmount = 300;
+    carousel.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+
+    setTimeout(() => {
+      const cards = carousel.querySelectorAll('.service-card');
+      if (direction > 0) carousel.appendChild(cards[0]);
+      else carousel.insertBefore(cards[cards.length - 1], cards[0]);
+      carousel.scrollTo({ left: 0 });
+    }, 300);
+  }
+
+  if (carousel && leftBtn && rightBtn) {
+    leftBtn.addEventListener('click', () => scrollCarousel(-1));
+    rightBtn.addEventListener('click', () => scrollCarousel(1));
+    setInterval(() => scrollCarousel(1), 5000);
+  }
+})();
+
+
+/* ===== 6. SCROLL-IN ANIMATIONS ===== */
+(() => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const animatedItems = document.querySelectorAll('.animate-on-scroll');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.3 });
+
+    animatedItems.forEach(item => observer.observe(item));
+  });
+})();
+
+
+/* ===== 7. TESTIMONIAL SLIDER ===== */
+(() => {
+  const testimonials = document.querySelectorAll('.testimonial');
+  const prev = document.querySelector('.testimonial-prev');
+  const next = document.querySelector('.testimonial-next');
+  let current = 0;
+
+  function updateTestimonials(index) {
+    testimonials.forEach((t, i) => t.classList.toggle('active', i === index));
+  }
+
+  if (testimonials.length && prev && next) {
+    prev.addEventListener('click', () => {
+      current = (current - 1 + testimonials.length) % testimonials.length;
+      updateTestimonials(current);
     });
-};
 
-// Set initial state for animated elements
-window.addEventListener('DOMContentLoaded', () => {
-    const elements = document.querySelectorAll('.service-card, .section-title, .showcase-content');
-    
-    elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    next.addEventListener('click', () => {
+      current = (current + 1) % testimonials.length;
+      updateTestimonials(current);
     });
-    
-    // Trigger animation for elements already in view
-    setTimeout(animateOnScroll, 100);
-});
+  }
+})();
 
-window.addEventListener('scroll', animateOnScroll);
 
-// Audio Player Simulation (for demo purposes)
-const audioElements = document.querySelectorAll('audio');
-const playButtons = document.querySelectorAll('.play-demo');
+/* ===== 8. TOUR TABS ===== */
+(() => {
+  const tourBtns = document.querySelectorAll('.tour-nav-btn');
+  const tourCards = document.querySelectorAll('.tour-card');
 
-if (playButtons.length > 0) {
-    playButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const audioId = this.getAttribute('data-audio');
-            const audio = document.getElementById(audioId);
-            const icon = this.querySelector('i');
-            
-            if (audio.paused) {
-                // Pause all other audio elements
-                audioElements.forEach(a => {
-                    if (a !== audio) {
-                        a.pause();
-                        a.currentTime = 0;
-                        const otherIcons = document.querySelectorAll(`.play-demo[data-audio="${a.id}"] i`);
-                        otherIcons.forEach(i => {
-                            i.classList.remove('fa-pause');
-                            i.classList.add('fa-play');
-                        });
-                    }
-                });
-                
-                audio.play();
-                icon.classList.remove('fa-play');
-                icon.classList.add('fa-pause');
-            } else {
-                audio.pause();
-                audio.currentTime = 0;
-                icon.classList.remove('fa-pause');
-                icon.classList.add('fa-play');
-            }
-        });
+  tourBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.target;
+      tourBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      tourCards.forEach(card => {
+        card.classList.toggle('active', card.dataset.tab === target);
+      });
     });
-}
+  });
+})();
 
-// Mobile menu toggle for footer links on small screens
-const footerLinks = document.querySelector('.footer-links');
-const footerLinksTitle = document.createElement('div');
 
-if (footerLinks && window.innerWidth <= 768) {
-    footerLinksTitle.textContent = 'Quick Links';
-    footerLinksTitle.classList.add('footer-links-title');
-    footerLinksTitle.addEventListener('click', () => {
-        footerLinks.classList.toggle('expanded');
-    });
-    
-    footerLinks.insertBefore(footerLinksTitle, footerLinks.firstChild);
-    footerLinks.classList.add('collapsible');
-}
+/* ===== 9. CONTACT FORM SUBMISSION ===== */
+(() => {
+  const form = document.getElementById('studioContactForm');
+  const formMessage = document.getElementById('formMessage');
 
-// Counter Animation for Stats
-function animateCounters() {
-    const counters = document.querySelectorAll('.stat-number');
-    const speed = 200;
-    
-    counters.forEach(counter => {
-        const target = +counter.getAttribute('data-count');
-        const count = +counter.innerText;
-        const increment = target / speed;
-        
-        if (count < target) {
-            counter.innerText = Math.ceil(count + increment);
-            setTimeout(animateCounters, 1);
-        } else {
-            counter.innerText = target;
-        }
-    });
-}
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
 
-// Studio Tour Navigation
-function setupTour() {
-    const tourButtons = document.querySelectorAll('.tour-nav-btn');
-    const tourCards = document.querySelectorAll('.tour-card');
-    
-    tourButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons and cards
-            tourButtons.forEach(btn => btn.classList.remove('active'));
-            tourCards.forEach(card => card.classList.remove('active'));
-            
-            // Add active class to clicked button
-            button.classList.add('active');
-            
-            // Show corresponding card
-            const target = button.getAttribute('data-target');
-            document.querySelector(`.tour-card[data-tab="${target}"]`).classList.add('active');
-        });
-    });
-}
+      const spinner = form.querySelector('.button-spinner');
+      const buttonText = form.querySelector('.button-text');
 
-// Testimonial Slider
-function setupTestimonials() {
-    const testimonials = document.querySelectorAll('.testimonial');
-    const prevBtn = document.querySelector('.testimonial-prev');
-    const nextBtn = document.querySelector('.testimonial-next');
-    let current = 0;
-    
-    function showTestimonial(index) {
-        testimonials.forEach(testimonial => testimonial.classList.remove('active'));
-        testimonials[index].classList.add('active');
-    }
-    
-    prevBtn.addEventListener('click', () => {
-        current = (current > 0) ? current - 1 : testimonials.length - 1;
-        showTestimonial(current);
-    });
-    
-    nextBtn.addEventListener('click', () => {
-        current = (current < testimonials.length - 1) ? current + 1 : 0;
-        showTestimonial(current);
-    });
-    
-    // Auto-rotate testimonials
-    setInterval(() => {
-        current = (current < testimonials.length - 1) ? current + 1 : 0;
-        showTestimonial(current);
-    }, 5000);
-}
+      spinner.style.display = 'inline-block';
+      buttonText.style.display = 'none';
 
-// Initialize all functions when DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-    // Start counter animation when stats come into view
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounters();
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    const statsSection = document.querySelector('.stats-grid');
-    if (statsSection) {
-        observer.observe(statsSection);
-    }
-    
-    setupTour();
-    setupTestimonials();
-});
-
-document.getElementById("studioContactForm")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const button = form.querySelector("button[type='submit']");
-    const messageDiv = document.getElementById("formMessage");
-    
-    if (!button || !messageDiv) {
-        console.error("Form elements not found");
-        return;
-    }
-
-    // Show loading state
-    const buttonText = button.querySelector(".button-text");
-    const buttonSpinner = button.querySelector(".button-spinner");
-    button.disabled = true;
-    buttonText.style.display = "none";
-    buttonSpinner.style.display = "inline-block";
-    messageDiv.textContent = "";
-    messageDiv.className = "form-message";
-    
-    try {
-        // Prepare data
-        const formData = {
-            secret: form.secret.value,
-            name: form.name.value.trim(),
-            email: form.email.value.trim(),
-            phone: form.phone.value.trim(),
-            service: form.service.value,
-            message: form.message.value.trim()
-        };
-
-        // Basic validation
-        if (!formData.name || !formData.email || !formData.message) {
-            throw new Error("Please fill in all required fields");
-        }
-
-        // Send to Google Script
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwH86Sp3LwIZll87hnz2NQCAyPtCPX0SuprwDDSdSlkBdWZ-kKyvq5KvF71mtVQ35jOhQ/exec", {
-            method: "POST",
-            mode: "cors", // Explicitly enable CORS
-            body: JSON.stringify(formData),
-            headers: { 
-              "Content-Type": "application/json"
-            }
-          });
-
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-
-        const result = await response.json();
-        
-        if (!result.success) {
-            throw new Error(result.message || "Form submission failed");
-        }
-
-        // Success!
+      setTimeout(() => {
+        formMessage.innerText = 'Your message has been sent!';
         form.reset();
-        messageDiv.textContent = "✓ Message sent successfully!";
-        messageDiv.classList.add("success");
+        spinner.style.display = 'none';
+        buttonText.style.display = 'inline-block';
+      }, 2000);
+    });
+  }
+})();
+
+
+/* ===== 10. WHATSAPP FLOAT TOOLTIP ===== */
+(() => {
+  const whatsapp = document.querySelector('.whatsapp-float');
+  const tooltip = whatsapp?.querySelector('.tooltip');
+
+  if (whatsapp && tooltip) {
+    whatsapp.addEventListener('mouseenter', () => tooltip.style.opacity = '1');
+    whatsapp.addEventListener('mouseleave', () => tooltip.style.opacity = '0');
+  }
+})();
+
+/* ===== 9. CONTACT FORM RENDER & SUBMIT ===== */
+(() => {
+  const contactFormContainer = document.querySelector('.contact-form');
+
+  if (!contactFormContainer) return;
+
+  // Form HTML structure
+  const formHTML = `
+    <h2 class="section-title">SEND US A MESSAGE</h2>
+    <form id="studioContactForm">
+      <input type="hidden" name="secret" value="AYSRAEL2023!">
+      
+      <div class="form-group">
+        <input type="text" name="name" placeholder="Your Name" required pattern="[A-Za-z ]{3,50}" title="3-50 characters">
+      </div>
+      
+      <div class="form-group">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+      
+      <div class="form-group">
+        <input type="tel" name="phone" placeholder="Phone (optional)" pattern="[0-9+ ]{10,15}">
+      </div>
+      
+      <div class="form-group">
+        <select name="service" required>
+          <option value="" disabled selected>Select Service</option>
+          <option value="Recording">Recording Session</option>
+          <option value="Mixing">Mixing</option>
+          <option value="Mastering">Mastering</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <textarea name="message" placeholder="Your message..." required minlength="20"></textarea>
+      </div>
+      
+      <button type="submit" class="cta-button">
+        <span class="button-text">Send Message</span>
+        <span class="button-spinner" style="display:none;">
+          <i class="fas fa-spinner fa-spin"></i>
+        </span>
+      </button>
+      
+      <div id="formMessage" class="form-message"></div>
+    </form>
+  `;
+
+  // Render the form
+  contactFormContainer.innerHTML = formHTML;
+
+  // Form submission handler
+  const form = document.getElementById('studioContactForm');
+  const formMessage = document.getElementById('formMessage');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const spinner = form.querySelector('.button-spinner');
+    const buttonText = form.querySelector('.button-text');
+
+    // Show loading spinner
+    spinner.style.display = 'inline-block';
+    buttonText.style.display = 'none';
+
+    // Gather form data
+    const formData = new FormData(form);
+    const formObject = Object.fromEntries(formData.entries());
+
+    // TODO: Replace with your actual Google Apps Script URL
+    const scriptURL = "https://script.google.com/macros/s/your-script-id/exec";
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        body: new URLSearchParams(formObject),
+      });
+
+      const result = await response.text();
+      formMessage.innerText = "Your message has been sent!";
+      form.reset();
     } catch (error) {
-        console.error("Form error:", error);
-        messageDiv.textContent = `✗ ${error.message}`;
-        messageDiv.classList.add("error");
-    } finally {
-        // Reset button
-        button.disabled = false;
-        buttonText.style.display = "inline-block";
-        buttonSpinner.style.display = "none";
+      formMessage.innerText = "Failed to send. Please try again.";
     }
-});
+
+    // Hide spinner
+    spinner.style.display = 'none';
+    buttonText.style.display = 'inline-block';
+  });
+})();
